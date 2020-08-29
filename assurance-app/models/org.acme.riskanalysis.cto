@@ -1,0 +1,106 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Write your model definitions here
+ */
+
+namespace org.acme.riskanalysis
+
+/* PARTICIPANTS A NOTRE SYSTEME */
+participant Souscripteur identified by id {
+  o String id
+  o String nom
+  o Double balance default = 0.0
+  o Integer AnneeReclamation default = 0
+}
+
+participant AssuranceCompagny identified by id {
+  o String id
+  o String nom
+  o Double balance default = 0.0
+  o Integer assuranceContrats default = 0
+}
+
+/***** ACTIFS DU SYSTEMES */
+asset PrivateAsset identified by id {
+  o String id
+  o AssetType assetType
+  o Double value
+  --> Souscripteur souscripteur
+  o Integer dureeMensuelle
+  o Double riskAnalysisScore default = 0.0
+  --> AssuranceCompagny assurancecompagny optional
+}
+
+enum AssetType {
+  o VOITURE
+  o MAISON
+  o TELEPHONE
+}
+
+asset AssuranceOffre identified by id {
+  o String id
+  --> Souscripteur souscripteur
+  --> AssuranceCompagny assurancecompagny
+  --> PrivateAsset privateAsset
+  o Double MontantMensuel
+  o Integer dureeMensuelle
+  o String status default = "encours"
+}
+
+asset Reclamation identified by id {
+  o String id
+  --> PrivateAsset privateAsset
+  --> Souscripteur souscripteur
+  --> AssuranceCompagny assurancecompagny
+  o String description
+  o Double reclamationValue
+  o String status default = "encours"
+}
+
+/*** TRANSACTIONS DE NOTRE BLOCKCHAIN *****/
+transaction AssuranceOffreValidation {
+  --> AssuranceOffre offre
+}
+
+transaction AssuranceOffreFormuler {
+  --> Souscripteur souscripteur
+  --> AssuranceCompagny assurancecompagny
+  --> PrivateAsset privateAsset
+  o Double MontantMensuel
+}
+
+transaction RiskAnalysis {
+  --> PrivateAsset privateAsset
+}
+
+transaction CreerNewActif {
+  --> Souscripteur souscripteur
+  o AssetType assetType
+  o Double value
+  o Integer dureeMensuelle
+}
+
+transaction ReclamationCreation {
+  --> PrivateAsset privateAsset
+  --> Souscripteur souscripteur
+  o String description
+  o Double reclamationValue
+}
+
+transaction ReclamationValidation {
+  -->Reclamation reclamation
+  o String status
+}

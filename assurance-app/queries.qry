@@ -1,0 +1,38 @@
+query selectAssuranceCompanyByInsuredAsset {
+  description: "Selectionnez une compagnie d'assurance a partir d'un actif assure"
+  statement:
+    SELECT org.acme.riskanalysis.AssuranceOffre
+      WHERE ((privateAsset == _$privateAsset) AND (status == 'accepter'))
+}
+
+query selectAssetByPolicyholder {
+  description: "Select an asset based on the owner"
+  statement:
+    SELECT org.acme.riskanalysis.PrivateAsset
+      WHERE (souscripteur == _$souscripteur)
+}
+
+query selectAssuranceOffreBySouscripteur {
+  description: "Selectionner une offre d'assurance par souscripteur"
+  statement:
+    SELECT org.acme.riskanalysis.AssuranceOffre
+      WHERE (souscripteur == _$souscripteur)
+}
+
+query selectAllSouscripteur {
+  description: "Selectionner tous les souscripteurs"
+  statement:
+    SELECT org.acme.riskanalysis.Souscripteur
+}
+
+query selectAllPrivateAsset {
+  description: "Selectionner tous les Actifs"
+  statement:
+    SELECT org.acme.riskanalysis.PrivateAsset
+}
+
+query selectAllAssuranceCompagny {
+  description: "Selectionner toutes les compagnies d'assurance"
+  statement:
+  SELECT org.acme.riskanalysis.AssuranceCompagny
+}
