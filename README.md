@@ -32,5 +32,5 @@ L'application est divisé en trois partie :
 
 3.Client-app
 - Exécuter la commande npm install
-- Modifier le fichier Package.json, cherchez la ligne Script-->Start : Ajouter PORT=3002
+- Modifier le fichier Package.json, cherchez la ligne Script-->Start : Ajouter PORT=3003
 - Enregistrer et Exécuter npm start
